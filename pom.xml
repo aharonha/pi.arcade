@@ -15,4 +15,11 @@
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>il.co.hacmon.aharon</groupId>
+			<artifactId>pi.pushbutton</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 </project>
