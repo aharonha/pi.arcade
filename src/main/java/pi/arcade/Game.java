@@ -9,10 +9,14 @@ public abstract class Game extends Thread {
 
 	@Override
 	public void run() {
-		do {
-			if (!currentPlayer().turn()) {
-				turnEnd();
-			}
-		} while (!isGameEnd());
+		try {
+			do {
+				if (!currentPlayer().turn()) {
+					turnEnd();
+				}
+			} while (!isGameEnd());
+		} catch (InterruptedException e) {
+
+		}
 	}
 }
