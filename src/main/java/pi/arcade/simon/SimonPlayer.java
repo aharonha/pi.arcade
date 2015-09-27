@@ -45,7 +45,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 
 	protected List<PushButtonWithLED> buttons;
 	final protected OfInt randomInts = new Random(System.currentTimeMillis())
-			.ints().map(Math::abs).iterator();
+			.ints(0,allPushButtonWithLEDs.length).map(Math::abs).iterator();
 
 	@Override
 	public boolean turn() throws InterruptedException {
@@ -53,8 +53,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 			mainPlayerThread = Thread.currentThread();
 
 		// Add button to the buttons list
-		buttons.add(allPushButtonWithLEDs[randomInts.nextInt()
-				% allPushButtonWithLEDs.length]);
+		buttons.add(allPushButtonWithLEDs[randomInts.nextInt()]);
 
 		// Blink phase
 		Queue<Switch> expectedButtonsOnThisTurn = new LinkedBlockingQueue<>(
