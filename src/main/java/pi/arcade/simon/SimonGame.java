@@ -17,6 +17,7 @@ public class SimonGame extends Game {
 	protected SimonPlayer currPlayer, firstPlayer;
 
 	public SimonGame(Player... player) {
+		super("Simon Game");
 		players = new ArrayList<SimonPlayer>();
 		for (Player p : player) {
 			SimonPlayer simonPlayer;

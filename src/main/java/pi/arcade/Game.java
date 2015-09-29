@@ -1,6 +1,10 @@
 package pi.arcade;
 
 public abstract class Game extends Thread {
+	public Game(String name) {
+		super(name);
+	}
+
 	protected abstract Player currentPlayer();
 
 	protected abstract void turnEnd();
