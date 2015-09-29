@@ -53,13 +53,14 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 
 		// Add button to the buttons list
 		buttons.add(allPushButtonWithLEDs[randomInts.nextInt()]);
-
+ 
 		// Blink phase
 		Queue<Switch> expectedButtonsOnThisTurn = new LinkedBlockingQueue<>(
 				buttons.size());
 		buttons.forEach(led -> {
 			synchronized (this) {
 				expectedButtonsOnThisTurn.offer(led);
+				System.err.println(led.getName());
 				led.pulse(SECONDS.toMillis(2), true);
 			}
 		});
