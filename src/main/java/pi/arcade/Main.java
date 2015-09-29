@@ -35,8 +35,8 @@ public class Main {
 			boolean withPlayer2 = false;
 
 			try {
-				I2CBusImpl.getBus(I2CBus.BUS_1).getDevice(PCF8574_0x20).read();
-				I2CBusImpl.getBus(I2CBus.BUS_1).getDevice(PCF8574_0x21).read();
+				I2CBusImpl.getBus(I2CBus.BUS_1).getDevice(PCF8574_0x22).read();
+				I2CBusImpl.getBus(I2CBus.BUS_1).getDevice(PCF8574_0x23).read();
 				withPlayer2 = true;
 			} catch (IOException e) {
 				I2CBusImpl.getBus(I2CBus.BUS_1).close();
