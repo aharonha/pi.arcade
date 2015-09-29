@@ -49,6 +49,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 
 	@Override
 	public boolean turn() throws InterruptedException {
+		System.out.println(getName() + "'s turn");
 		if (mainPlayerThread != Thread.currentThread())
 			mainPlayerThread = Thread.currentThread();
 
