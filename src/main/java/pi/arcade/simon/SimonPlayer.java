@@ -91,15 +91,18 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 	public void onStateChange(SwitchStateChangeEvent event) {
 		synchronized (this) {
 			if (actualPressedButtons != null) {
+				Switch pressed = event.getSwitch();
 				if (event.getNewState().equals(SwitchState.ON)) {
 					try {
-						Switch pressed = event.getSwitch();
 						System.err.println("you pressed " + pressed.getName());
 						actualPressedButtons.put(pressed.getName());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 						mainPlayerThread.interrupt();
 					}
+				}
+				else {
+					System.err.println(pressed.getName() + " released");
 				}
 			}
 		}
