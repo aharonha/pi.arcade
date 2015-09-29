@@ -71,11 +71,10 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 
 	private boolean buttonsPressSquanceMatches(Queue<String> expectedButtons)
 			throws InterruptedException {
-		actualPressedButtons = new ArrayBlockingQueue<Switch>(
-				expectedButtons.size());
+		actualPressedButtons = new ArrayBlockingQueue<>(expectedButtons.size());
 		for (String expectedSwitch = expectedButtons.poll(); !expectedButtons
 				.isEmpty(); expectedSwitch = expectedButtons.poll()) {
-			String actualPressed = actualPressedButtons.take().getName();
+			String actualPressed = actualPressedButtons.take();
 			if (!expectedSwitch.equals(actualPressed)) {
 				synchronized (this) {
 					actualPressedButtons = null;
@@ -86,7 +85,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 		return true;
 	}
 
-	private volatile ArrayBlockingQueue<Switch> actualPressedButtons = null;
+	private volatile ArrayBlockingQueue<String> actualPressedButtons = null;
 
 	@Override
 	public void onStateChange(SwitchStateChangeEvent event) {
@@ -94,9 +93,9 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 			if (actualPressedButtons != null) {
 				if (event.getNewState().equals(SwitchState.ON)) {
 					try {
-						System.err.println("you pressed"
-								+ event.getSwitch().getName());
-						actualPressedButtons.put(event.getSwitch());
+						Switch pressed = event.getSwitch();
+						System.err.println("you pressed " + pressed.getName());
+						actualPressedButtons.put(pressed.getName());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 						mainPlayerThread.interrupt();
