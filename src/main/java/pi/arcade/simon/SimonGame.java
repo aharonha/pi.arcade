@@ -13,7 +13,8 @@ public class SimonGame extends Game {
 
 	private final List<SimonPlayer> players;
 	private final Iterator<SimonPlayer> playersIterator;
-	protected SimonPlayer currPlayer;
+	private volatile boolean ended = false;
+	protected SimonPlayer currPlayer, firstPlayer;
 
 	public SimonGame(Player... player) {
 		players = new ArrayList<SimonPlayer>();
@@ -27,6 +28,7 @@ public class SimonGame extends Game {
 			players.add(simonPlayer);
 		}
 		playersIterator = Iterables.cycle(players).iterator();
+		firstPlayer = currPlayer = playersIterator.next();
 	}
 
 	@Override
@@ -36,12 +38,13 @@ public class SimonGame extends Game {
 
 	@Override
 	protected void turnEnd() {
-		currPlayer = playersIterator.next();
+		SimonPlayer nextPlayer = playersIterator.next();
+		ended = (nextPlayer == firstPlayer);
+		currPlayer = nextPlayer;
 	}
 
 	@Override
 	protected boolean isGameEnd() {
-		return false;
+		return ended;
 	}
-
 }
