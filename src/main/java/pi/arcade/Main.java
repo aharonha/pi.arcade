@@ -3,6 +3,7 @@ package pi.arcade;
 import java.io.IOException;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 
 import pi.arcade.simon.SimonGame;
 import pi.arcade.simon.SimonPlayer;
@@ -38,10 +39,10 @@ public class Main {
 			Game game;
 			try {
 				System.out.println("checking player 2");
-
+				player2.getBlue().blink(100).get();
 				System.out.println("player 2 online (0x22-0x23)");
 				game = new SimonGame(player1, player2);
-			} catch (Exception e) {
+			} catch (ExecutionException e) {
 				System.err.println("player 2 is offline");
 				game = new SimonGame(player1);
 			}
