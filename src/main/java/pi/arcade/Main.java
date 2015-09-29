@@ -42,9 +42,17 @@ public class Main {
 				player2.getBlue().blink(100).get();
 				System.out.println("player 2 online (0x22-0x23)");
 				game = new SimonGame(player1, player2);
-			} catch (ExecutionException e) {
-				System.err.println("player 2 is offline");
-				game = new SimonGame(player1);
+			} catch (RuntimeException | ExecutionException e) {
+				if (e.getCause() instanceof IOException) {
+					System.err.println("player 2 is offline");
+					game = new SimonGame(player1);
+				} else {
+					if (e instanceof RuntimeException) {
+						throw (RuntimeException) e;
+					} else {
+						throw new RuntimeException(e.getCause());
+					}
+				}
 			}
 
 			synchronized (game) {
