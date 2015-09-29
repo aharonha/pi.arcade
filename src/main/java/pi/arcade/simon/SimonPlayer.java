@@ -39,13 +39,11 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 		this.yellow = p.getYellow();
 		this.white = p.getWhite();
 		this.mainPlayerThread = Thread.currentThread();
-		buttons = new ArrayList<>();
-
 	}
 
-	protected List<PushButtonWithLED> buttons;
+	protected List<PushButtonWithLED> buttons = new ArrayList<>();
 	final protected OfInt randomInts = new Random(System.currentTimeMillis())
-			.ints(0,allPushButtonWithLEDs.length).map(Math::abs).iterator();
+			.ints(0, allPushButtonWithLEDs.length).map(Math::abs).iterator();
 
 	@Override
 	public boolean turn() throws InterruptedException {
