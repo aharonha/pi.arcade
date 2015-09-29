@@ -45,6 +45,8 @@ public class Main {
 			} catch (RuntimeException | ExecutionException e) {
 				if (e.getCause() instanceof IOException) {
 					System.err.println("player 2 is offline");
+					providerForButtons2.shutdown();
+					providerForLEDs2.shutdown();
 					game = new SimonGame(player1);
 				} else {
 					if (e instanceof RuntimeException) {
