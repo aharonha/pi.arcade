@@ -29,7 +29,17 @@ public class Main {
 					"player 1", providerForLEDs1);
 			Player player2 = new SimonPlayer(gpio, providerForButtons2,
 					"player 2", providerForLEDs2);
-			Game game = new SimonGame(player1, player2);
+			Game game; 
+			try {
+				System.out.println("checking player 2");
+				player2.getBlue().blink(100).get();
+				System.out.println("player 2 online (0x22-0x23)");
+				game = new SimonGame(player1, player2);				
+			} catch (Exception e) {
+				System.err.println("player 2 is offline");
+				game = new SimonGame(player1);
+			}
+
 
 			synchronized (game) {
 				game.start();
