@@ -56,4 +56,9 @@
 			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
+	<scm>
+		<url>https://github.com/aharonha/pi.arcade</url>
+		<connection>scm:git:git@github.com:aharonha/pi.arcade.git</connection>
+		<developerConnection>scm:git:git@github.com:aharonha/pi.arcade.git</developerConnection>
+	</scm>
 </project>
