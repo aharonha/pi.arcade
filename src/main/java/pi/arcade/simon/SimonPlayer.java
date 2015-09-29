@@ -55,11 +55,11 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 		buttons.add(allPushButtonWithLEDs[randomInts.nextInt()]);
 
 		// Blink phase
-		Queue<Switch> expectedButtonsOnThisTurn = new LinkedBlockingQueue<>(
+		Queue<String> expectedButtonsOnThisTurn = new LinkedBlockingQueue<>(
 				buttons.size());
 		buttons.forEach(led -> {
 			synchronized (this) {
-				expectedButtonsOnThisTurn.offer(led);
+				expectedButtonsOnThisTurn.offer(led.getName());
 				System.err.println(led.getName());
 				led.pulse(SECONDS.toMillis(2), true);
 			}
@@ -69,14 +69,14 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 		return buttonsPressSquanceMatches(expectedButtonsOnThisTurn);
 	}
 
-	private boolean buttonsPressSquanceMatches(Queue<Switch> expectedButtons)
+	private boolean buttonsPressSquanceMatches(Queue<String> expectedButtons)
 			throws InterruptedException {
 		actualPressedButtons = new ArrayBlockingQueue<Switch>(
 				expectedButtons.size());
-		for (Switch expectedSwitch = expectedButtons.poll(); !expectedButtons
+		for (String expectedSwitch = expectedButtons.poll(); !expectedButtons
 				.isEmpty(); expectedSwitch = expectedButtons.poll()) {
-			Switch actual = actualPressedButtons.take();
-			if (expectedSwitch != actual) {
+			String actualPressed = actualPressedButtons.take().getName();
+			if (!expectedSwitch.equals(actualPressed)) {
 				synchronized (this) {
 					actualPressedButtons = null;
 				}
@@ -94,7 +94,8 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 			if (actualPressedButtons != null) {
 				if (event.getNewState().equals(SwitchState.ON)) {
 					try {
-						System.err.println("you pressed" + event.getSwitch().getName());
+						System.err.println("you pressed"
+								+ event.getSwitch().getName());
 						actualPressedButtons.put(event.getSwitch());
 					} catch (InterruptedException e) {
 						e.printStackTrace();
