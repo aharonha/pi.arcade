@@ -53,7 +53,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 
 		// Add button to the buttons list
 		buttons.add(allPushButtonWithLEDs[randomInts.nextInt()]);
- 
+
 		// Blink phase
 		Queue<Switch> expectedButtonsOnThisTurn = new LinkedBlockingQueue<>(
 				buttons.size());
@@ -73,16 +73,15 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 			throws InterruptedException {
 		actualPressedButtons = new ArrayBlockingQueue<Switch>(
 				expectedButtons.size());
-		do {
-			Switch expectedSwitch = expectedButtons.poll();
+		for (Switch expectedSwitch = expectedButtons.poll(); !expectedButtons
+				.isEmpty(); expectedSwitch = expectedButtons.poll()) {
 			if (expectedSwitch != actualPressedButtons.take()) {
 				synchronized (this) {
 					actualPressedButtons = null;
 				}
 				return false;
 			}
-		} while (!expectedButtons.isEmpty());
-
+		}
 		return true;
 	}
 
