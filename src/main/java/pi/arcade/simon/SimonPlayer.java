@@ -26,6 +26,9 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 	public SimonPlayer(GpioController gpio, GpioProvider providerForButtons,
 			String player, GpioProvider providerForLEDs) {
 		super(gpio, providerForButtons, player, providerForLEDs);
+		for (PushButtonWithLED pushbutton : allPushButtonWithLEDs) {
+			pushbutton.addListener(pushbutton.turnLedOnWhenPressed());
+		}
 		this.mainPlayerThread = Thread.currentThread();
 	}
 
@@ -72,8 +75,8 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 	private boolean buttonsPressSquanceMatches(Queue<String> expectedButtons)
 			throws InterruptedException {
 		actualPressedButtons = new ArrayBlockingQueue<>(expectedButtons.size());
-		for (String expectedSwitch = expectedButtons.poll(); !expectedButtons
-				.isEmpty(); expectedSwitch = expectedButtons.poll()) {
+		do {
+			String expectedSwitch = expectedButtons.poll();
 			String actualPressed = actualPressedButtons.take();
 			if (!expectedSwitch.equals(actualPressed)) {
 				synchronized (this) {
@@ -81,7 +84,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 				}
 				return false;
 			}
-		}
+		} while (!expectedButtons.isEmpty());
 		return true;
 	}
 
@@ -100,8 +103,7 @@ public class SimonPlayer extends PlayerImpl implements SwitchListener {
 						e.printStackTrace();
 						mainPlayerThread.interrupt();
 					}
-				}
-				else {
+				} else {
 					System.err.println(pressed.getName() + " released");
 				}
 			}
